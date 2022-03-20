@@ -9,10 +9,11 @@ import {store} from './src/store/store';
 import {name as appName} from './app.json';
 
 import OneSignal from 'react-native-onesignal';
+import {ONE_SIGNAL_APP_ID} from '@env';
 
 //OneSignal Init Code
 OneSignal.setLogLevel(6, 0);
-OneSignal.setAppId('d350e719-01b7-4d07-88e1-270a8b4cf6f7');
+OneSignal.setAppId(ONE_SIGNAL_APP_ID);
 //END OneSignal Init Code
 
 //Prompt for push on iOS
