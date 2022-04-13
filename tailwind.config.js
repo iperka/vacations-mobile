@@ -1,7 +1,10 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   content: [],
   theme: {
     extend: {
+      fontFamily: {sans: ['OpenSans', ...defaultTheme.fontFamily.sans]},
       colors: {
         red: {
           DEFAULT: '#FF3A30',

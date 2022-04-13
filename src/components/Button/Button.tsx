@@ -13,6 +13,7 @@ import {useDeviceContext} from 'twrnc';
 import tw from '../../tailwindcss';
 
 export type Color =
+  | 'white'
   | 'red'
   | 'orange'
   | 'yellow'
@@ -37,6 +38,14 @@ export interface ButtonProps extends PressableProps {
 
 const getColor = (color: Color, pressed: boolean, disabled: boolean) => {
   switch (color) {
+    case 'white':
+      if (disabled) {
+        return tw`bg-white-300 dark:bg-gray-800 border-gray-300 dark:border-gray-700`;
+      }
+      if (pressed) {
+        return tw`bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-700`;
+      }
+      return tw`bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-700`;
     case 'red':
       if (disabled) {
         return tw`bg-red-300 dark:bg-redDark-300`;
@@ -163,11 +172,13 @@ export const Spinner = () => {
           cy="12"
           r="10"
           stroke="currentColor"
-          stroke-width="4"></Circle>
+          stroke-width="4"
+        />
         <Path
           opacity={75}
           fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></Path>
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        />
       </Svg>
     </Animated.View>
   );
@@ -187,16 +198,23 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <Pressable
       style={({pressed}) => [
-        tw`bg-blue px-4 py-3 rounded-lg items-center flex flex-row justify-center items-center`,
+        tw`bg-blue px-4 py-3 rounded-lg items-center flex flex-row justify-center items-center border`,
         getColor(color, pressed, !!disabled || !!loading),
         style,
       ]}
-      {...rest}>
+      {...rest}
+      disabled={disabled || loading}>
       {!!loading && <Spinner />}
       {children ? (
         children
       ) : (
-        <Text style={[tw`text-white text-center font-semibold`]}>{text}</Text>
+        <Text
+          style={[
+            tw`text-white text-center font-semibold`,
+            color === 'white' && tw`text-black dark:text-white`,
+          ]}>
+          {text}
+        </Text>
       )}
     </Pressable>
   );

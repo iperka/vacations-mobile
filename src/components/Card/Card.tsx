@@ -1,30 +1,23 @@
-import React, {ReactChild, ReactNode, useState} from 'react';
-import {StyleProp, Text, View, ViewStyle} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
+import Animated from 'react-native-reanimated';
 import {useDeviceContext} from 'twrnc';
 import tw from '../../tailwindcss';
 
-export type CardProps = {
-  title?: string;
-  children: ReactChild | ReactChild[] | ReactNode | ReactNode[];
-  style?: StyleProp<ViewStyle>;
-};
+export interface CardProps extends React.ComponentProps<typeof Animated.View> {}
 
-const Card: React.FC<CardProps> = ({title, style, children}) => {
+const Card: React.FC<CardProps> = ({style, children, ...props}) => {
   useDeviceContext(tw);
 
   return (
-    <View
+    <Animated.View
       style={[
-        tw`mx-4 my-2 flex p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm`,
+        tw`bg-white dark:bg-slate-800 overflow-hidden shadow rounded-lg`,
         style,
-      ]}>
-      {title && (
-        <Text style={[tw`dark:text-white text-2xl font-bold mb-2`]}>
-          {title}
-        </Text>
-      )}
-      <View style={[tw`flex-grow`]}>{children}</View>
-    </View>
+      ]}
+      {...props}>
+      <View style={[tw`px-4 py-5 sm:p-6`]}>{children}</View>
+    </Animated.View>
   );
 };
 
