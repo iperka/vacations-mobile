@@ -32,10 +32,16 @@ const getClassName = (props: {
   focus?: boolean;
 }): string => {
   if (props.invalid) {
-    return 'bg-red-100 dark:bg-redDark-900 border-red-600 dark:border-redDark-600';
+    if (props.focus) {
+      return 'bg-red-100 dark:bg-redDark-900 border-red-600 dark:border-redDark-600';
+    }
+    return 'bg-gray-50 dark:bg-gray-700 border-red-600 dark:border-redDark-600';
   }
   if (props.valid) {
-    return 'bg-green-100 dark:bg-greenDark-900 border-green-600 dark:border-greenDark-600';
+    if (props.focus) {
+      return 'bg-green-100 dark:bg-greenDark-800 border-green-600 dark:border-greenDark-600';
+    }
+    return 'bg-gray-50 dark:bg-gray-700 border-green-600 dark:border-greenDark-600';
   }
   if (props.focus) {
     return 'bg-gray-50 dark:bg-gray-700 border-blue-500 dark:border-blueDark-600';
