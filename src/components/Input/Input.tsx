@@ -55,54 +55,51 @@ export interface InputProps extends TextInputProps {
   loading?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({
-  invalid,
-  valid,
-  loading,
-  style,
-  ...props
-}) => {
-  useDeviceContext(tw);
+const Input = React.forwardRef<TextInput, InputProps>(
+  ({invalid, valid, loading, style, ...props}, ref) => {
+    useDeviceContext(tw);
 
-  const [isFocus, setIsFocus] = useState<boolean>(false);
+    const [isFocus, setIsFocus] = useState<boolean>(false);
 
-  return (
-    <View
-      style={[
-        tw`flex flex-row items-center border-2 my-1 rounded-lg border-gray-300 dark:border-gray-500`,
-        tw.style(getClassName({invalid, valid, loading, focus: isFocus})),
-      ]}>
-      <TextInput
-        defaultValue="Test"
-        style={[tw`flex-grow px-4 py-3 dark:text-white`, style]}
-        onFocus={() => {
-          setIsFocus(true);
-        }}
-        onBlur={() => {
-          setIsFocus(false);
-        }}
-        {...props}
-        editable={!loading}
-      />
-
-      {loading ? (
-        <ActivityIndicator style={[tw`pr-2`]} />
-      ) : (
-        invalid && (
-          <InputIcon
-            name="ios-alert-circle"
-            style={[tw`text-red-600 text-redDark-600`]}
-          />
-        )
-      )}
-      {valid && (
-        <InputIcon
-          name="ios-checkmark-circle"
-          style={[tw`text-green-600 text-greenDark-600`]}
+    return (
+      <View
+        style={[
+          tw`flex flex-row items-center border-2 my-1 rounded-lg border-gray-300 dark:border-gray-500`,
+          tw.style(getClassName({invalid, valid, loading, focus: isFocus})),
+        ]}>
+        <TextInput
+          ref={ref}
+          defaultValue="Test"
+          style={[tw`flex-grow px-4 py-3 dark:text-white`, style]}
+          onFocus={() => {
+            setIsFocus(true);
+          }}
+          onBlur={() => {
+            setIsFocus(false);
+          }}
+          {...props}
+          editable={!loading}
         />
-      )}
-    </View>
-  );
-};
+
+        {loading ? (
+          <ActivityIndicator style={[tw`pr-2`]} />
+        ) : (
+          invalid && (
+            <InputIcon
+              name="ios-alert-circle"
+              style={[tw`text-red-600 text-redDark-600`]}
+            />
+          )
+        )}
+        {valid && (
+          <InputIcon
+            name="ios-checkmark-circle"
+            style={[tw`text-green-600 text-greenDark-600`]}
+          />
+        )}
+      </View>
+    );
+  },
+);
 
 export default Input;
