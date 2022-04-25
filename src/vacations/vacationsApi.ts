@@ -7,7 +7,7 @@ export const vacationApi = createApi({
   reducerPath: 'vacationApi',
   tagTypes: ['Vacations'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.prod.vacations.iperka.com/v1/vacations',
+    baseUrl: 'https://api.vacations.iperka.com/v1/vacations',
     // baseUrl: 'http://localhost:8080/vacations',
     prepareHeaders: (headers, {getState}) => {
       // By default, if we have a token in the store, let's use that for authenticated requests

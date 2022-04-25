@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDeviceContext} from 'twrnc';
+import AccountScreen from '../../account/AccountScreen';
 import {AuthContext, LoginScreen} from '../../auth';
 import HomeScreen from '../../home/HomeScreen';
 import tw from '../../tailwindcss';
@@ -50,7 +51,9 @@ const Root: React.FC = () => {
             name="VacationAdd"
             component={VacationAddScreen}
             options={{
-              headerShown: false,
+              headerStyle: [tw`bg-blue-500 dark:bg-blueDark-500`],
+              headerTitleStyle: [tw`text-white`],
+              title: 'Add Vacation',
               tabBarIcon: ({focused}) => {
                 return (
                   <Icon
@@ -76,6 +79,28 @@ const Root: React.FC = () => {
                 return (
                   <Icon
                     name={focused ? 'ios-calendar' : 'ios-calendar-outline'}
+                    size={25}
+                    style={
+                      focused
+                        ? [tw`text-blue-500`]
+                        : [tw`text-gray-900 dark:text-gray-100`]
+                    }
+                  />
+                );
+              },
+              tabBarShowLabel: false,
+            }}
+          />
+
+          <Tab.Screen
+            name="Account"
+            component={AccountScreen}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({focused}) => {
+                return (
+                  <Icon
+                    name={focused ? 'ios-user' : 'ios-user-outline'}
                     size={25}
                     style={
                       focused

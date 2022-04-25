@@ -17,34 +17,45 @@ const LoginScreen: React.FC = () => {
 
   const [error, setError] = useState<string>();
 
-  const handleLogin = useCallback(() => {
-    auth0.webAuth
-      .authorize({
-        scope:
-          'openid profile offline_access vacations:read vacations:write friendships:read friendships:write users:read',
-        audience: AUTH0_AUDIENCE,
-      })
-      .then(credentials => {
-        setAccessToken(credentials.accessToken);
-        setIsLoggedIn(true);
-        auth0.auth.userInfo({token: credentials.accessToken}).then(user => {
-          setUser(user);
-          if (credentials.refreshToken) {
-            Keychain.setGenericPassword(user.sub, credentials.refreshToken)
-              .then(console.log)
-              .catch(console.error);
-          }
+  const handleLogin = useCallback(
+    (signUp: boolean) => {
+      auth0.webAuth
+        .authorize({
+          scope:
+            'openid profile offline_access vacations:read vacations:write friendships:read friendships:write users:read',
+          audience: AUTH0_AUDIENCE,
+          prompt: signUp ? 'login' : undefined,
+        })
+        .then(credentials => {
+          setAccessToken(credentials.accessToken);
+          setIsLoggedIn(true);
+          auth0.auth.userInfo({token: credentials.accessToken}).then(user => {
+            setUser(user);
+            if (credentials.refreshToken) {
+              Keychain.setGenericPassword(user.sub, credentials.refreshToken)
+                .then(console.log)
+                .catch(console.error);
+            }
+          });
+        })
+        .catch(e => {
+          setError(e.message);
         });
-      })
-      .catch(e => {
-        setError(e.message);
-      });
-  }, [auth0, setAccessToken, setIsLoggedIn, setUser]);
+    },
+    [auth0, setAccessToken, setIsLoggedIn, setUser],
+  );
 
   return (
     <SafeAreaView style={[tw`px-6 pt-4 h-full bg-white dark:bg-slate-900`]}>
       <Text>Login Screen</Text>
-      <Button onPress={handleLogin} text="Login" />
+      <Button onPress={() => handleLogin(false)} text="Sign In" />
+      <Button
+        style={[tw`mt-6`]}
+        onPress={() => {
+          handleLogin(true);
+        }}
+        text="Sign Up"
+      />
       {error && <Text>{error}</Text>}
     </SafeAreaView>
   );
